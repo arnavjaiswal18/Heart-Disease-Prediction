@@ -1,0 +1,8 @@
+0
+cp
+thalach
+oldpeak
+slope
+ca
+thal
+exang
