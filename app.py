@@ -3,9 +3,18 @@ import joblib
 import numpy as np
 import os
 import pandas as pd
+import psycopg2
 
 app = Flask(__name__)
 
+def get_db_connection():
+    print("✅ Connecting to PostgreSQL...")
+    return psycopg2.connect(
+        host="localhost",
+        database="heart_disease_db",
+        user="postgres",
+        password="arnav@1804"
+    )
 # Load model, scaler and feature order
 MODEL_PATH = os.path.join("model", "heart_disease_model.pkl")
 SCALER_PATH = os.path.join("model", "scaler.joblib")
@@ -48,7 +57,7 @@ def predict():
     pred = model.predict(X)[0]
     prob = None
     if hasattr(model, "predict_proba"):
-        prob = model.predict_proba(X)[0][1]
+        prob = round(float(model.predict_proba(X)[0][1]), 2)
 
     # result = "Heart Disease Detected" if pred == 1 else "No Heart Disease"
     # if prob is not None:
@@ -67,6 +76,28 @@ def predict():
     else:
         output = "Heart Disease Detected" if pred == 1 else "No Heart Disease Detected"
         status = "danger" if pred == 1 else "success"
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO patients (
+                cp, thalach, oldpeak, exang, ca, thal, slope,
+                prediction, probability
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            cp, thalach, oldpeak, exang, ca, thal, slope,
+            output, prob
+        ))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+    except Exception as db_error:
+        print("Database error:", db_error)
 
     return render_template("index.html", output=output, status=status)
 
