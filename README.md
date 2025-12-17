@@ -1,4 +1,4 @@
-❤️ Heart Disease Prediction System
+❤️ Heart Disease Prediction System 
 
 A machine learning–based web application that predicts the risk of heart disease using patient clinical data. The system uses a trained ML model and provides real-time predictions through a Flask web interface, with patient data securely stored in PostgreSQL.
 
@@ -24,18 +24,27 @@ This project predicts whether a patient is at risk of heart disease based on sel
 
 Backend
 
-  Python,
-  Flask,
-  NumPy,
-  Pandas,
-  Scikit-learn,
+  Python
+  
+  Flask
+  
+  NumPy
+  
+  Pandas
+  
+  Scikit-learn
+  
   psycopg2 (PostgreSQL connector)
 
 Frontend
-  HTML5,
-  Bootstrap 5,
+
+  HTML5
+  
+  Bootstrap 5
+  
   Jinja2 Templates
 
 Database
+
   PostgreSQL
   
