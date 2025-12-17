@@ -50,10 +50,25 @@ def predict():
     if hasattr(model, "predict_proba"):
         prob = model.predict_proba(X)[0][1]
 
-    result = "Heart Disease Detected" if pred == 1 else "No Heart Disease"
+    # result = "Heart Disease Detected" if pred == 1 else "No Heart Disease"
+    # if prob is not None:
+    #     result = f"{result} (probability: {prob:.2f})"
+    # return render_template("index.html", output=result)
+
+    threshold = 0.5
+
     if prob is not None:
-        result = f"{result} (probability: {prob:.2f})"
-    return render_template("index.html", output=result)
+        if prob >= threshold:
+            output = f"Heart Disease Detected (probability: {prob:.2f})"
+            status = "danger"
+        else:
+            output = f"No Heart Disease Detected (probability: {prob:.2f})"
+            status = "success"
+    else:
+        output = "Heart Disease Detected" if pred == 1 else "No Heart Disease Detected"
+        status = "danger" if pred == 1 else "success"
+
+    return render_template("index.html", output=output, status=status)
 
 if __name__ == "__main__":
     app.run(debug=True)

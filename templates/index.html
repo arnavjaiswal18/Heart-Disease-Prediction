@@ -5,91 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heart Disease Prediction</title>
 
-    <!-- Bootstrap CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+        }
+        .card {
+            border-radius: 15px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
+            border: none;
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        footer {
+            font-size: 14px;
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body>
 
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">❤️ Heart Disease Prediction System</h2>
+<div class="container mt-5 mb-5">
 
-        <!-- Result Card -->
-        {% if output %}
-        <div class="alert alert-info text-center fs-5">
-            <strong>{{ output }}</strong>
-        </div>
-        {% endif %}
-
-        <!-- Form Card -->
-        <div class="card shadow p-4">
-            <form action="/predict" method="POST">
-
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Chest Pain Type (cp)</label>
-                        <input type="number" min="0" max="3" step="any"
-                               name="cp" class="form-control"
-                               placeholder="Enter value 0-3" required>
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Maximum Heart Rate (thalach)</label>
-                        <input type="number" min="60" max="202" step="any"
-                               name="thalach" class="form-control"
-                               placeholder="Enter value 60-202" required>
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Oldpeak (ST Depression)</label>
-                        <input type="number" min="0" max="6.2" step="0.1"
-                               name="oldpeak" class="form-control"
-                               placeholder="Enter value 0.0-6.2" required>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Exercise Induced Angina (exang)</label>
-                        <input type="number" min="0" max="1" step="1"
-                               name="exang" class="form-control"
-                               placeholder="Enter 0 or 1" required>
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Major Vessels Colored (ca)</label>
-                        <input type="number" min="0" max="4" step="1"
-                               name="ca" class="form-control"
-                               placeholder="Enter value 0-4" required>
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Thalassemia (thal)</label>
-                        <input type="number" min="0" max="3" step="1"
-                               name="thal" class="form-control"
-                               placeholder="Enter value 0-3" required>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Slope of Peak Exercise (slope)</label>
-                        <input type="number" min="0" max="2" step="1"
-                               name="slope" class="form-control"
-                               placeholder="Enter value 0-2" required>
-                    </div>
-                </div>
-
-                <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-primary px-4 py-2">
-                        Predict
-                    </button>
-                </div>
-
-            </form>
-        </div>
+    <!-- Header -->
+    <div class="text-center mb-4">
+        <h2>❤️ Heart Disease Prediction System</h2>
+        <p class="text-muted">
+            Predict the risk of heart disease using a machine learning model
+        </p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prediction Result -->
+    {% if output %}
+        <div class="alert alert-{{ status }} text-center fs-5">
+        <strong>{{ output }}</strong>
+        </div>
+    {% endif %}
+
+    <!-- Form Card -->
+    <div class="card shadow p-4">
+        <form action="/predict" method="POST">
+
+            <h5 class="text-primary mb-3">Patient Clinical Details</h5>
+            <hr>
+
+            <!-- Row 1 -->
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Chest Pain Type</label>
+                    <select name="cp" class="form-select" required>
+                        <option value="">Select</option>
+                        <option value="0">0-Typical Angina</option>
+                        <option value="1">1-Atypical Angina</option>
+                        <option value="2">2-Non-anginal Pain</option>
+                        <option value="3">3-Asymptomatic</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Maximum Heart Rate</label>
+                    <input type="number" name="thalach" class="form-control"
+                           placeholder="60 - 202" min="60" max="202" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">ST Depression (Oldpeak)</label>
+                    <input type="number" step="0.1" name="oldpeak" class="form-control"
+                           placeholder="0.0 - 6.2" min="0" max="6.2" required>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Exercise Induced Angina</label>
+                    <select name="exang" class="form-select" required>
+                        <option value="">Select</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Major Vessels Colored (ca)</label>
+                    <select name="ca" class="form-select" required>
+                        <option value="">Select</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Thalassemia</label>
+                    <select name="thal" class="form-select" required>
+                        <option value="">Select</option>
+                        <option value="0">0-Normal</option>
+                        <option value="1">1-Fixed Defect</option>
+                        <option value="2">2-Reversible Defect</option>
+                        <option value="3">3-Unknown</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Slope of Peak Exercise</label>
+                    <select name="slope" class="form-select" required>
+                        <option value="">Select</option>
+                        <option value="0">0-Upsloping</option>
+                        <option value="1">1-Flat</option>
+                        <option value="2">2-Downsloping</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary px-4 py-2 w-100">
+                    🔍 Predict Heart Disease Risk
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-muted mt-4">
+        <small>
+            © 2025 Heart Disease Prediction | Machine Learning Powered
+        </small>
+    </footer>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
