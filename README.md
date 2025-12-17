@@ -24,16 +24,16 @@ This project predicts whether a patient is at risk of heart disease based on sel
 
 Backend
 
-  Python
-  Flask
-  NumPy
-  Pandas
-  Scikit-learn
+  Python,
+  Flask,
+  NumPy,
+  Pandas,
+  Scikit-learn,
   psycopg2 (PostgreSQL connector)
 
 Frontend
-  HTML5
-  Bootstrap 5
+  HTML5,
+  Bootstrap 5,
   Jinja2 Templates
 
 Database
